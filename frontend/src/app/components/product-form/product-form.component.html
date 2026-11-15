@@ -1,0 +1,86 @@
+
+<div class="form-container">
+
+  <h2>{{ isEditMode ? 'Update Product' : 'Add Product' }}</h2>
+
+  <p *ngIf="errorMessage" class="error">
+    {{ errorMessage }}
+  </p>
+
+  <form #productForm="ngForm" (ngSubmit)="saveProduct()">
+
+    <div class="form-group">
+      <label for="nom">Product Name</label>
+      <input
+        type="text"
+        id="nom"
+        name="nom"
+        [(ngModel)]="product.nom"
+        required
+        placeholder="Enter product name">
+    </div>
+
+    <div class="form-group">
+      <label for="prix">Price</label>
+      <input
+        type="number"
+        id="prix"
+        name="prix"
+        [(ngModel)]="product.prix"
+        required
+        min="0">
+    </div>
+
+    <div class="form-group">
+      <label for="quantite">Quantity</label>
+      <input
+        type="number"
+        id="quantite"
+        name="quantite"
+        [(ngModel)]="product.quantite"
+        required
+        min="0">
+    </div>
+
+    <div class="form-group">
+      <label for="description">Description</label>
+      <textarea
+        id="description"
+        name="description"
+        [(ngModel)]="product.description"
+        placeholder="Enter product description">
+      </textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="categorie">Category</label>
+      <select
+        id="categorie"
+        name="categorie"
+        [ngModel]="product.categorie?.id"
+        (ngModelChange)="onCategoryChange($event)"
+        required>
+
+        <option [ngValue]="undefined">Select a category</option>
+
+        <option
+          *ngFor="let category of categories"
+          [ngValue]="category.id">
+          {{ category.nom }}
+        </option>
+
+      </select>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" [disabled]="productForm.invalid">
+        {{ isEditMode ? 'Update' : 'Save' }}
+      </button>
+
+      <button type="button" class="cancel-btn" (click)="cancel()">
+        Cancel
+      </button>
+    </div>
+
+  </form>
+</div>

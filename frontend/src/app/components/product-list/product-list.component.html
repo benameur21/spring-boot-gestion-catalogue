@@ -1,0 +1,52 @@
+
+<div class="container">
+  <h2>Product List</h2>
+
+  <button class="add-btn" routerLink="/products/new">
+    + Add Product
+  </button>
+
+  <p *ngIf="errorMessage" class="error">
+    {{ errorMessage }}
+  </p>
+
+  <table *ngIf="products.length > 0">
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Price</th>
+      <th>Quantity</th>
+      <th>Description</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr *ngFor="let product of products">
+      <td>{{ product.id }}</td>
+      <td>{{ product.nom }}</td>
+      <td>{{ product.prix }}</td>
+      <td>{{ product.quantite }}</td>
+      <td>{{ product.description }}</td>
+      <td>
+        <button
+          class="edit-btn"
+          [routerLink]="['/products/edit', product.id]">
+          Edit
+        </button>
+
+        <button
+          class="delete-btn"
+          (click)="deleteProduct(product.id!)">
+          Delete
+        </button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <p *ngIf="products.length === 0 && !errorMessage">
+    No products found.
+  </p>
+</div>
