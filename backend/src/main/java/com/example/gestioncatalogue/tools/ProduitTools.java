@@ -122,4 +122,49 @@ public class ProduitTools {
     }
 
 
+
+    @Tool(
+            name = "createProduct",
+            description = "Cree et enregistre un nouveau produit dans la base de donnees MySQL"
+    )
+    public Produit createProduct(
+
+            @ToolParam(description = "Nom commercial du produit", required = true)
+            String nom,
+
+            @ToolParam(description = "Prix de vente en dinars (positif)", required = true)
+            double prix,
+
+            @ToolParam(description = "Quantite initiale en stock", required = true)
+            int quantite,
+
+            @ToolParam(description = "Description detaillee du produit", required = true)
+            String description) {
+
+        // 1. Validation defensive
+        if (prix <= 0) {
+            throw new IllegalArgumentException("Le prix doit etre superieur a zero.");
+        }
+
+        if (quantite < 0) {
+            throw new IllegalArgumentException("La quantite ne peut pas etre negative.");
+        }
+
+        if (nom == null || nom.trim().isEmpty()) {
+            throw new IllegalArgumentException("Le nom du produit est obligatoire.");
+        }
+
+        // 2. Instancier une nouvelle entite Produit
+        Produit produit = new Produit();
+        produit.setNom(nom);
+        produit.setPrix(prix);
+        produit.setQuantite(quantite);
+        produit.setDescription(description);
+
+        // 3. Enregistrer le produit dans MySQL
+        return produitRepository.save(produit);
+    }
+
+
+
 }

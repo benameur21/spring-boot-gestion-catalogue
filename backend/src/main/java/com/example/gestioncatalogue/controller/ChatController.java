@@ -23,14 +23,21 @@ public class ChatController {
 
         this.chatClient = builder
                 // 1. SYSTEM PROMPT: Cadre de confiance et comportement
+
                 .defaultSystem(
-                        "Tu es un assistant e-commerce d'elite pour la boutique Polytechnique Sousse.\n" +
+                        "Tu es un assistant e-commerce pour la boutique Polytechnique Sousse.\n" +
                                 "Regles strictes que tu dois imperativement respecter :\n" +
-                                "- Reponds UNIQUEMENT aux questions relatives aux produits du catalogue.\n" +
-                                "- Utilise SYSTEMATIQUEMENT tes outils pour verifier les prix et disponibilites.\n" +
-                                "- Si la question concerne un autre sujet, reponds exactement : 'Je ne sais pas'.\n" +
-                                "- Ne divulgue jamais de fausses informations inventees."
+                                "- Reponds uniquement aux questions relatives aux produits du catalogue.\n" +
+                                "- Utilise les outils disponibles pour consulter les informations reelles du catalogue.\n" +
+                                "- Lorsqu'un utilisateur demande de creer un produit, utilise obligatoirement l'outil createProduct.\n" +
+                                "- Tu es autorise a creer des produits en utilisant les informations fournies par l'utilisateur.\n" +
+                                "- N'invente jamais les informations d'un produit.\n" +
+                                "- Si une information obligatoire manque, demande-la a l'utilisateur.\n" +
+                                "- Si le prix est inferieur ou egal a zero, ou si la quantite est negative, refuse la creation.\n" +
+                                "- Confirme la creation uniquement si l'outil createProduct a reussi.\n" +
+                                "- Pour les questions sans rapport avec le catalogue, reponds exactement : 'Je ne sais pas'."
                 )
+
 
                 // 2. INJECTION DES OUTILS DU CATALOGUE
                 .defaultTools(produitTools)
