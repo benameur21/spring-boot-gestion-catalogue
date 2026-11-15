@@ -1,1 +1,32 @@
-<router-outlet></router-outlet>
+
+<header class="navbar">
+  <div class="navbar-content">
+
+    <a routerLink="/products" class="brand">
+      <span class="brand-icon">GC</span>
+      <span>Gestion Catalogue</span>
+    </a>
+
+    <nav>
+      <a
+        routerLink="/products"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }">
+        Products
+      </a>
+
+      <a routerLink="/products/new">
+        Add Product
+      </a>
+    </nav>
+
+  </div>
+</header>
+
+<main>
+  <router-outlet></router-outlet>
+</main>
+
+<footer class="footer">
+  <p>Gestion Catalogue © 2026 — Product Management System</p>
+</footer>

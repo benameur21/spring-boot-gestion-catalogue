@@ -1,52 +1,98 @@
 
 <div class="container">
-  <h2>Product List</h2>
 
-  <button class="add-btn" routerLink="/products/new">
-    + Add Product
-  </button>
+  <div class="page-header">
+    <div>
+      <h1>Products</h1>
+      <p class="subtitle">Manage and organize your product catalogue.</p>
+    </div>
 
-  <p *ngIf="errorMessage" class="error">
-    {{ errorMessage }}
-  </p>
+    <button class="add-btn" routerLink="/products/new">
+      <span>+</span> Add Product
+    </button>
+  </div>
 
-  <table *ngIf="products.length > 0">
-    <thead>
-    <tr>
-      <th>ID</th>
-      <th>Name</th>
-      <th>Price</th>
-      <th>Quantity</th>
-      <th>Description</th>
-      <th>Actions</th>
-    </tr>
-    </thead>
+  <div class="stats-card">
+    <div class="stats-icon">📦</div>
+    <div>
+      <p>Total Products</p>
+      <h2>{{ products.length }}</h2>
+    </div>
+  </div>
 
-    <tbody>
-    <tr *ngFor="let product of products">
-      <td>{{ product.id }}</td>
-      <td>{{ product.nom }}</td>
-      <td>{{ product.prix }}</td>
-      <td>{{ product.quantite }}</td>
-      <td>{{ product.description }}</td>
-      <td>
-        <button
-          class="edit-btn"
-          [routerLink]="['/products/edit', product.id]">
-          Edit
-        </button>
+  <div class="table-card">
 
-        <button
-          class="delete-btn"
-          (click)="deleteProduct(product.id!)">
-          Delete
-        </button>
-      </td>
-    </tr>
-    </tbody>
-  </table>
+    <div class="table-header">
+      <h3>All Products</h3>
+      <span>{{ products.length }} products</span>
+    </div>
 
-  <p *ngIf="products.length === 0 && !errorMessage">
-    No products found.
-  </p>
+    <p *ngIf="errorMessage" class="error">
+      {{ errorMessage }}
+    </p>
+
+    <div class="table-responsive" *ngIf="products.length > 0">
+      <table>
+        <thead>
+        <tr>
+          <th>ID</th>
+          <th>PRODUCT NAME</th>
+          <th>PRICE</th>
+          <th>QUANTITY</th>
+          <th>DESCRIPTION</th>
+          <th>ACTIONS</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr *ngFor="let product of products">
+          <td class="product-id">#{{ product.id }}</td>
+
+          <td>
+            <div class="product-name">
+              <span class="product-icon">📦</span>
+              <strong>{{ product.nom }}</strong>
+            </div>
+          </td>
+
+          <td class="price">{{ product.prix | number:'1.2-2' }}</td>
+
+          <td>
+              <span class="quantity-badge">
+                {{ product.quantite }}
+              </span>
+          </td>
+
+          <td class="description">{{ product.description || '—' }}</td>
+
+          <td>
+            <div class="actions">
+              <button
+                class="edit-btn"
+                [routerLink]="['/products/edit', product.id]">
+                Edit
+              </button>
+
+              <button
+                class="delete-btn"
+                (click)="deleteProduct(product.id!)">
+                Delete
+              </button>
+            </div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="empty-state" *ngIf="products.length === 0 && !errorMessage">
+      <div class="empty-icon">📦</div>
+      <h3>No products found</h3>
+      <p>Start by adding your first product.</p>
+      <button class="add-btn" routerLink="/products/new">
+        + Add Product
+      </button>
+    </div>
+
+  </div>
 </div>
