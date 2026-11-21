@@ -2,15 +2,15 @@
 package com.example.gestioncatalogue.controller;
 
 import com.example.gestioncatalogue.tools.ProduitTools;
-
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.memory.ChatMemory;
-
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 public class ChatController {
 
@@ -22,8 +22,6 @@ public class ChatController {
             ChatMemory chatMemory) {
 
         this.chatClient = builder
-                // 1. SYSTEM PROMPT: Cadre de confiance et comportement
-
                 .defaultSystem(
                         "Tu es un assistant e-commerce pour la boutique Polytechnique Sousse.\n" +
                                 "Regles strictes que tu dois imperativement respecter :\n" +
@@ -37,19 +35,13 @@ public class ChatController {
                                 "- Confirme la creation uniquement si l'outil createProduct a reussi.\n" +
                                 "- Pour les questions sans rapport avec le catalogue, reponds exactement : 'Je ne sais pas'."
                 )
-
-
-                // 2. INJECTION DES OUTILS DU CATALOGUE
                 .defaultTools(produitTools)
-
-                // 3. MEMOIRE CONVERSATIONNELLE
                 .defaultAdvisors(advisors -> advisors
                         .advisors(
                                 MessageChatMemoryAdvisor.builder(chatMemory).build()
                         )
                         .param(ChatMemory.CONVERSATION_ID, "default")
                 )
-
                 .build();
     }
 
