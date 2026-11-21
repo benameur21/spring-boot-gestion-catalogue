@@ -1,0 +1,146 @@
+
+<div class="chat-page">
+
+  <div class="chat-container">
+
+    <!-- Chat Header -->
+    <div class="chat-header">
+      <div class="assistant-info">
+        <div class="assistant-avatar">AI</div>
+
+        <div>
+          <h2>Catalogue Assistant</h2>
+          <span class="status">
+            <span class="status-dot"></span>
+            AI Assistant
+          </span>
+        </div>
+      </div>
+
+      <div class="header-label">
+        <span>Powered by Ollama</span>
+      </div>
+    </div>
+
+    <!-- Chat Messages -->
+    <div class="chat-messages" #chatMessages>
+
+      <!-- Welcome Screen -->
+      <div class="welcome-screen" *ngIf="messages.length === 0">
+
+        <div class="welcome-icon">✦</div>
+
+        <h1>How can I help you?</h1>
+
+        <p>
+          I'm your intelligent catalogue assistant.
+          Ask me about products, prices, stock availability,
+          or catalogue statistics.
+        </p>
+
+        <div class="suggestions">
+
+          <button
+            (click)="sendSuggestion('Show me all available products')">
+            <span>📦</span>
+            Show all products
+          </button>
+
+          <button
+            (click)="sendSuggestion('What are the catalogue statistics?')">
+            <span>📊</span>
+            Catalogue statistics
+          </button>
+
+          <button
+            (click)="sendSuggestion('Which products are available in stock?')">
+            <span>🔍</span>
+            Check product availability
+          </button>
+
+          <button
+            (click)="sendSuggestion('What is the most expensive product?')">
+            <span>💰</span>
+            Find the most expensive product
+          </button>
+
+        </div>
+      </div>
+
+      <!-- Conversation -->
+      <div
+        *ngFor="let message of messages"
+        class="message-row"
+        [ngClass]="message.sender">
+
+        <div class="message-avatar">
+          {{ message.sender === 'assistant' ? 'AI' : 'U' }}
+        </div>
+
+        <div class="message-content">
+          <div class="message-sender">
+            {{ message.sender === 'assistant' ? 'Assistant' : 'You' }}
+          </div>
+
+          <div class="message-bubble">
+            {{ message.content }}
+          </div>
+
+          <span class="message-time">
+            {{ message.timestamp | date:'shortTime' }}
+          </span>
+        </div>
+
+      </div>
+
+      <!-- Typing Indicator -->
+      <div class="message-row assistant" *ngIf="isLoading">
+
+        <div class="message-avatar">AI</div>
+
+        <div class="message-content">
+          <div class="message-sender">Assistant</div>
+
+          <div class="typing-indicator">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Message Input -->
+    <div class="chat-input-area">
+
+      <form
+        class="chat-input-form"
+        (ngSubmit)="sendMessage()">
+
+        <input
+          type="text"
+          name="message"
+          [(ngModel)]="newMessage"
+          placeholder="Ask something about your catalogue..."
+          [disabled]="isLoading"
+          autocomplete="off">
+
+        <button
+          type="submit"
+          [disabled]="!newMessage.trim() || isLoading">
+          ➤
+        </button>
+
+      </form>
+
+      <p class="input-disclaimer">
+        AI can make mistakes. Verify important catalogue information.
+      </p>
+
+    </div>
+
+  </div>
+
+</div>
